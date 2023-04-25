@@ -9,18 +9,15 @@ namespace RSG
     public abstract class AbstractState : IState
     {
         /// <summary>
-        ///     Parent state, or null if this is the root level state.
+        ///     Parent state, or State.Nobody if this is the root level state.
         /// </summary>
-        public IState Parent { get; set; }
-        /// <summary>
-        ///     Stack of active child states.
-        /// </summary>
+        public IState Parent { get; set; } = State.Empty;
         private readonly Stack<IState> _activeChildren = new Stack<IState>();
         /// <summary>
         ///     Dictionary of all children (active and inactive), and their names.
         /// </summary>
         private readonly IDictionary<string, IState> _children = new Dictionary<string, IState>();
-        private readonly IList<Condition> _conditions = new List<Condition>();
+        private readonly IList<StateCondition> _conditions = new List<StateCondition>();
         /// <summary>
         ///     Dictionary of all actions associated with this state.
         /// </summary>
@@ -28,15 +25,15 @@ namespace RSG
         /// <summary>
         ///     Action called when we enter the state.
         /// </summary>
-        private Action _onEnter;
+        private Action _onEnter = delegate { };
         /// <summary>
         ///     Action called when we exit the state.
         /// </summary>
-        private Action _onExit;
+        private Action _onExit = delegate { };
         /// <summary>
         ///     Action called when the state gets updated.
         /// </summary>
-        private Action<float> _onUpdate;
+        private Action<float> _onUpdate = delegate { };
 
         /// <summary>
         ///     Cast the specified EventArgs to a specified type, throwing a descriptive exception if this fails.
@@ -76,11 +73,8 @@ namespace RSG
         ///     Create a new state as a child of the current state and automatically derive
         ///     its name from its handler type.
         /// </summary>
-        public void AddChild(IState newState)
-        {
-            var name = newState.GetType().Name;
-            AddChild(newState, name);
-        }
+        public void AddChild(IState newState) =>
+            AddChild(newState, newState.GetType().Name);
 
         /// <summary>
         ///     Pops the current state from the stack and pushes the specified one on.
@@ -106,14 +100,14 @@ namespace RSG
         ///     Triggered when we enter the state.
         /// </summary>
         public void Enter() =>
-            _onEnter?.Invoke();
+            _onEnter.Invoke();
 
         /// <summary>
         ///     Triggered when we exit the state.
         /// </summary>
         public void Exit()
         {
-            _onExit?.Invoke();
+            _onExit.Invoke();
 
             while (_activeChildren.Count > 0)
             {
@@ -155,14 +149,8 @@ namespace RSG
         ///     Set an action to be called when the state is updated an a specified
         ///     predicate is true.
         /// </summary>
-        public void SetCondition(Func<bool> predicate, Action action)
-        {
-            _conditions.Add(new Condition
-            {
-                Predicate = predicate,
-                Action = action
-            });
-        }
+        public void SetCondition(Func<bool> predicate, Action action) =>
+            _conditions.Add(new StateCondition(predicate, action));
 
         /// <summary>
         ///     Action triggered on entering the state.
@@ -183,7 +171,7 @@ namespace RSG
         ///     Sets an action to be associated with an identifier that can later be used
         ///     to trigger it.
         /// </summary>
-        public void SetEvent<TEvent>(string identifier, Action<TEvent> eventTriggeredAction)
+        public void SetEvent<TEvent>(string identifier, Action<TEvent> eventTriggeredAction) //TODO: event trigger class to avoid closures
             where TEvent : EventArgs =>
             _events.Add(identifier, args => eventTriggeredAction(CheckEventArgs<TEvent>(identifier, args)));
 
@@ -224,9 +212,9 @@ namespace RSG
                 _activeChildren.Peek().TriggerEvent(name, eventArgs);
                 return;
             }
-            if (_events.TryGetValue(name, out var myEvent))
+            if (_events.TryGetValue(name, out var result))
             {
-                myEvent(eventArgs);
+                result.Invoke(eventArgs);
             }
         }
 
@@ -242,25 +230,12 @@ namespace RSG
                 return;
             }
 
-            _onUpdate?.Invoke(deltaTime);
+            _onUpdate.Invoke(deltaTime);
 
-            // Update conditions
-            for (var i = 0; i < _conditions.Count; i++)
+            for (int i = 0, max = _conditions.Count; i < max; i++)
             {
-                if (_conditions[i].Predicate())
-                {
-                    _conditions[i].Action();
-                }
+                _conditions[i].Execute();
             }
-        }
-
-        /// <summary>
-        ///     Data structure for associating a condition with an action.
-        /// </summary>
-        private struct Condition
-        {
-            public Func<bool> Predicate;
-            public Action Action;
         }
     }
 }

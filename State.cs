@@ -5,5 +5,6 @@
     /// </summary>
     public sealed class State : AbstractState
     {
+        public static readonly IState Empty = new State();
     }
 }

@@ -134,7 +134,7 @@ namespace RSG
         /// </summary>
         public IStateBuilder<T, TParent> Update(Action<T, float> onUpdate)
         {
-            _state.SetUpdateAction(dt => onUpdate(_state, dt));
+            _state.SetUpdateAction(timeDelta => onUpdate(_state, timeDelta));
             return this;
         }
     }

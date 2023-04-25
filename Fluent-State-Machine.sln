@@ -7,9 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluent-State-Machine", "Flu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Fluent-State-Machine.Tests", "Tests\Fluent-State-Machine.Tests.csproj", "{55DB04F4-F1BA-4A2D-9C83-3ECC5B7FC068}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Example1", "Examples\Example1\Example1.csproj", "{2542A390-0332-4752-8098-D81E7032B915}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharkLife", "Examples\SharkLife\SharkLife.csproj", "{2542A390-0332-4752-8098-D81E7032B915}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Examples", "Examples", "{97102977-A982-4BDC-BA10-44412B916C3B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Battle", "Examples\Battle\Battle.csproj", "{629CBA37-5317-4C58-8D49-599499A50047}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,11 +31,16 @@ Global
 		{2542A390-0332-4752-8098-D81E7032B915}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2542A390-0332-4752-8098-D81E7032B915}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2542A390-0332-4752-8098-D81E7032B915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{629CBA37-5317-4C58-8D49-599499A50047}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{629CBA37-5317-4C58-8D49-599499A50047}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{629CBA37-5317-4C58-8D49-599499A50047}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{629CBA37-5317-4C58-8D49-599499A50047}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2542A390-0332-4752-8098-D81E7032B915} = {97102977-A982-4BDC-BA10-44412B916C3B}
+		{629CBA37-5317-4C58-8D49-599499A50047} = {97102977-A982-4BDC-BA10-44412B916C3B}
 	EndGlobalSection
 EndGlobal
