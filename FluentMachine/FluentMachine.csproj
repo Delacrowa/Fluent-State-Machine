@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    
+    <AssemblyName>FluentMachine</AssemblyName>
+    <RootNamespace>FluentMachine</RootNamespace>
+    <Version>1.1.0</Version>
+    
+    <PackageId>FluentMachine</PackageId>
+    <Authors>Real Serious Games</Authors>
+    <Description>Fluent API for creating hierarchical finite state machines in C#. Compatible with Unity 6.</Description>
+    <PackageTags>state-machine;fsm;hfsm;fluent;unity</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CS1591</NoWarn>
+    <DebugType>portable</DebugType>
+  </PropertyGroup>
+
+</Project>
